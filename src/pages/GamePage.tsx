@@ -1,17 +1,28 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { GameHeader } from '../components/game/GameHeader';
 import { SectionView } from '../components/game/SectionView';
 // import { ChoicesList } from '../components/game/ChoicesList';
 import { mockGameData } from '../components/game/mockGameData';
-import { mockAdventures } from '../components/home/mockAdventures';
+import { fetchBookById } from '../services/booksApi';
 
 export const GamePage = () => {
     const { gameId } = useParams<{ gameId: string }>();
     const navigate = useNavigate();
+    const [gameTitle, setGameTitle] = useState('Adventure');
 
-    // Find the adventure by ID to get the title
-    const adventure = mockAdventures.find((adv) => adv.id === gameId);
-    const gameTitle = adventure?.title || 'Adventure';
+    // Fetch book title from API
+    useEffect(() => {
+        const loadBook = async () => {
+            if (gameId) {
+                const book = await fetchBookById(gameId);
+                if (book) {
+                    setGameTitle(book.title);
+                }
+            }
+        };
+        loadBook();
+    }, [gameId]);
 
     const handleBack = () => {
         navigate('/');
