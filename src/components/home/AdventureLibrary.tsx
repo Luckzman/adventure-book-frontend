@@ -1,9 +1,10 @@
 import { Filter } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { SearchInput } from '../common/SearchInput';
 import { FilterButton } from '../common/FilterButton';
 import { AdventureCardList } from './AdventureCardList';
-import { mockAdventures } from './mockAdventures';
+import { Loader } from '../common/Loader';
+import { fetchBooks } from '../../services/booksApi';
 import { type Adventure } from './AdventureCard';
 
 interface AdventureLibraryProps {
@@ -19,8 +20,36 @@ export const AdventureLibrary = ({
 }: AdventureLibraryProps) => {
     const [searchValue, setSearchValue] = useState('');
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
+    const [adventures, setAdventures] = useState<Adventure[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const genreFilters = ['Fantasy', 'Adventure', 'High Fantasy', 'Steampunk Mystery'];
+    // Fetch books on component mount
+    useEffect(() => {
+        const loadBooks = async () => {
+            try {
+                setIsLoading(true);
+                setError(null);
+                const books = await fetchBooks();
+                console.log('books', books);
+                setAdventures(books);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to load adventures');
+                console.error('Error loading books:', err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadBooks();
+    }, []);
+
+    // Extract unique genres and difficulties from fetched books
+    const genreFilters = useMemo(() => {
+        const genres = new Set(adventures.map((adv) => adv.genre));
+        return Array.from(genres).sort();
+    }, [adventures]);
+
     const difficultyFilters = ['Easy', 'Medium', 'Hard'];
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +68,7 @@ export const AdventureLibrary = ({
 
     // Filter adventures based on search and active filters
     const filteredAdventures = useMemo(() => {
-        let filtered: Adventure[] = [...mockAdventures];
+        let filtered: Adventure[] = [...adventures];
 
         // Apply search filter
         if (searchValue.trim()) {
@@ -64,7 +93,7 @@ export const AdventureLibrary = ({
         }
 
         return filtered;
-    }, [searchValue, activeFilters]);
+    }, [searchValue, activeFilters, adventures]);
 
     return (
         <main className="w-full bg-stone-50 py-12">
@@ -124,10 +153,21 @@ export const AdventureLibrary = ({
                 </div>
 
                 {/* Adventure Cards */}
-                <AdventureCardList
-                    adventures={filteredAdventures}
-                    onBeginQuest={onBeginQuest}
-                />
+                {isLoading ? (
+                    <div className="flex justify-center items-center py-12">
+                        <Loader size="lg" />
+                    </div>
+                ) : error ? (
+                    <div className="text-center py-12">
+                        <p className="text-red-600 text-lg mb-2">Error loading adventures</p>
+                        <p className="text-stone-600">{error}</p>
+                    </div>
+                ) : (
+                    <AdventureCardList
+                        adventures={filteredAdventures}
+                        onBeginQuest={onBeginQuest}
+                    />
+                )}
             </div>
         </main>
     );

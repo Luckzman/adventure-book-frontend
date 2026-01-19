@@ -18,6 +18,7 @@ interface AdventureCardProps {
 }
 
 const getDifficultyColor = (difficulty: Adventure['difficulty']) => {
+    console.log('difficulty', difficulty);
     switch (difficulty) {
         case 'Easy':
             return 'bg-[#DDFCE7] border border-[#87EDAE] text-[#196337]';
@@ -31,6 +32,7 @@ const getDifficultyColor = (difficulty: Adventure['difficulty']) => {
 };
 
 export const AdventureCard = ({ adventure, onBeginQuest }: AdventureCardProps) => {
+    console.log('adventure', adventure);
     const handleBeginQuest = () => {
         onBeginQuest?.(adventure.id);
     };
