@@ -94,8 +94,8 @@ export const AdventureLibrary = ({
                 </div>
 
                 {/* Filters Section */}
-                <div className="mx-auto flex items-center justify-center max-w-4xl gap-2">
-                    <div className=" flex items-center gap-2">
+                <div className="mx-auto flex flex-col lg:flex-row lg:items-center justify-center max-w-4xl gap-2">
+                    <div className=" flex items-center gap-2 md:pb-2">
                         <Filter className="h-4 w-4 text-stone-600" aria-hidden="true" />
                         <span className="text-sm font-medium text-stone-700">Filters:</span>
                     </div>
