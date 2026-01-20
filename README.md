@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/test.yml/badge.svg)](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/test.yml)
 [![Build](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/build.yml/badge.svg)](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/build.yml)
-[![Coverage](https://img.shields.io/badge/coverage-19%25-red)](./coverage)
+[![Coverage](https://github.com/Luckzman/adventure-book-frontend/blob/main/coverage/coverage-badge.svg)](./coverage)
 
 An interactive adventure book web application built with React, TypeScript, and Tailwind CSS.
 

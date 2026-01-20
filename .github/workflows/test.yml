@@ -21,9 +21,21 @@ jobs:
       - name: Generate coverage
         run: npm run test:coverage
         continue-on-error: true
+      - name: Generate coverage badge
+        run: npm run test:badge
+        continue-on-error: true
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           files: ./coverage/lcov.info
           fail_ci_if_error: false
+        continue-on-error: true
+      - name: Commit coverage badge
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add coverage/coverage-badge.svg 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "chore: update coverage badge [skip ci]"
+          git push || true
         continue-on-error: true
