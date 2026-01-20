@@ -32,7 +32,7 @@ export const ConsequenceFeedback = ({ consequence, onDismiss }: ConsequenceFeedb
                 </div>
                 <button
                     onClick={onDismiss}
-                    className="shrink-0 text-orange-600 hover:text-orange-800 transition-colors"
+                    className="shrink-0 text-orange-700 hover:text-orange-900 transition-colors cursor-pointer"
                     aria-label="Dismiss"
                 >
                     <X className="h-5 w-5" />

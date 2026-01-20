@@ -92,7 +92,7 @@ export const AdventureCard = ({ adventure }: AdventureCardProps) => {
             <button
                 onClick={handleBeginQuest}
                 aria-label={`Begin quest: ${adventure.title}`}
-                className="w-full bg-linear-to-r from-[#C18033] to-[#EFBF4E] text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:from-[#EFBF4E] hover:to-[#C18033] transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 mt-auto"
+                className="w-full bg-linear-to-r from-amber-700 to-amber-500 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:from-amber-600 hover:to-amber-400 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 cursor-pointer mt-auto"
             >
                 <Star className="h-5 w-5" />
                 <span className="text-white font-bold">Begin Quest</span>

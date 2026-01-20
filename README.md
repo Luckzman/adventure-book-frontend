@@ -1,12 +1,8 @@
 # Adventure Book Frontend
 
+[![Tests](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/test.yml/badge.svg)](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/test.yml)
+[![Build](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/build.yml/badge.svg)](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/build.yml)
 [![Coverage](https://img.shields.io/badge/coverage-19%25-red)](./coverage)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-7.2-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Vitest](https://img.shields.io/badge/Vitest-3.2-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
-[![Node](https://img.shields.io/badge/Node-18+-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 An interactive adventure book web application built with React, TypeScript, and Tailwind CSS.
 
@@ -110,49 +106,88 @@ npm run test:run
 ## Project Structure
 
 ```
-src/
-├── components/           # React components
-│   ├── common/          # Shared/reusable components
-│   │   ├── Button.tsx
-│   │   ├── ConfirmDialog.tsx
-│   │   ├── ErrorBoundary.tsx
-│   │   └── __tests__/   # Component tests
-│   ├── game/            # Game-specific components
-│   │   ├── GameHeader.tsx
-│   │   ├── ChoicesList.tsx
-│   │   ├── SectionView.tsx
-│   │   └── __tests__/
-│   └── home/            # Homepage components
-│       ├── AdventureCard.tsx
-│       ├── AdventureLibrary.tsx
-│       └── Header.tsx
-├── domain/              # Business logic (Domain-Driven Design)
-│   └── game/
-│       ├── gameReducer.ts    # Game state management
-│       ├── gameSelectors.ts  # Derived state selectors
-│       ├── gameTypes.ts      # Type definitions
-│       ├── gameConstants.ts  # Constants
-│       └── __tests__/        # Domain logic tests
-├── services/            # API services & data layer
-│   ├── booksApi.ts      # API client
-│   ├── validationSchemas.ts  # Zod validation schemas
-│   └── __tests__/       # Service tests
-├── hooks/               # Custom React hooks
-│   └── useBooks.ts      # Books context hook
-├── contexts/            # React Context providers
-│   ├── BooksProvider.tsx
-│   └── booksContext.ts
-├── pages/               # Page-level components
-│   ├── HomePage.tsx
-│   └── GamePage.tsx
-├── utils/               # Utility functions
-│   ├── logger.ts        # Centralized logging
-│   └── errorMessages.ts # Error formatting
-├── config/              # Configuration
-│   └── env.ts          # Environment variables
-└── test/                # Test configuration
-    ├── setup.ts         # Vitest setup
-    └── vitest.d.ts      # Type definitions
+adventure-book-frontend/
+├── .github/
+│   └── workflows/
+│       └── test.yml          # CI/CD test workflow
+├── scripts/
+│   └── generate-coverage-badge.js  # Coverage badge generator
+├── src/
+│   ├── components/           # React components
+│   │   ├── common/          # Shared/reusable components
+│   │   │   ├── Button.tsx
+│   │   │   ├── ConfirmDialog.tsx
+│   │   │   ├── ErrorBoundary.tsx
+│   │   │   ├── FilterButton.tsx
+│   │   │   ├── Loader.tsx
+│   │   │   ├── SearchInput.tsx
+│   │   │   └── __tests__/   # Component tests
+│   │   │       └── ConfirmDialog.test.tsx
+│   │   ├── game/            # Game-specific components
+│   │   │   ├── ChoicesList.tsx
+│   │   │   ├── ConsequenceFeedback.tsx
+│   │   │   ├── DeadEndScreen.tsx
+│   │   │   ├── GameContent.tsx          # Main game content
+│   │   │   ├── GameErrorBanner.tsx       # Dismissible error banner
+│   │   │   ├── GameErrorDisplay.tsx      # Error state display
+│   │   │   ├── GameHeader.tsx
+│   │   │   ├── GameLayout.tsx            # Layout wrapper
+│   │   │   ├── GameOverScreen.tsx
+│   │   │   ├── GamePageSkeleton.tsx      # Loading skeleton
+│   │   │   ├── PauseOverlay.tsx
+│   │   │   ├── SectionView.tsx
+│   │   │   ├── mockGameData.ts           # Mock data for development
+│   │   │   └── __tests__/                # Component tests
+│   │   │       └── ChoicesList.test.tsx
+│   │   └── home/            # Homepage components
+│   │       ├── AdventureCard.tsx
+│   │       ├── AdventureCardList.tsx
+│   │       ├── AdventureCardListSkeleton.tsx
+│   │       ├── AdventureCardSkeleton.tsx
+│   │       ├── AdventureLibrary.tsx
+│   │       ├── Header.tsx
+│   │       └── mockAdventures.ts         # Mock data for development
+│   ├── domain/              # Business logic (Domain-Driven Design)
+│   │   └── game/
+│   │       ├── gameConstants.ts  # Game constants (health, thresholds)
+│   │       ├── gameReducer.ts    # Game state management
+│   │       ├── gameSelectors.ts  # Derived state selectors
+│   │       ├── gameTypes.ts      # Type definitions
+│   │       └── __tests__/        # Domain logic tests
+│   │           ├── gameReducer.test.ts
+│   │           └── gameSelectors.test.ts
+│   ├── services/            # API services & data layer
+│   │   ├── booksApi.ts      # API client
+│   │   ├── validationSchemas.ts  # Zod validation schemas
+│   │   └── __tests__/       # Service tests
+│   │       ├── booksApi.test.ts
+│   │       └── validationSchemas.test.ts
+│   ├── hooks/               # Custom React hooks
+│   │   ├── useBooks.ts      # Books context hook
+│   │   ├── useGameActions.ts    # Game action handlers
+│   │   └── useGameData.ts       # Game data loading
+│   ├── contexts/            # React Context providers
+│   │   ├── BooksProvider.tsx
+│   │   └── booksContext.ts
+│   ├── pages/               # Page-level components
+│   │   ├── HomePage.tsx
+│   │   └── GamePage.tsx     # Main game page (orchestrator)
+│   ├── utils/               # Utility functions
+│   │   ├── errorMessages.ts # Error formatting
+│   │   ├── logger.ts        # Centralized logging
+│   │   └── notifications.ts # Notification utilities
+│   ├── config/              # Configuration
+│   │   └── env.ts          # Environment variables
+│   ├── test/                # Test configuration
+│   │   ├── setup.ts         # Vitest setup
+│   │   └── vitest.d.ts      # Type definitions for tests
+│   ├── App.tsx              # Root component
+│   └── main.tsx             # Application entry point
+├── vitest.config.ts         # Vitest configuration
+├── vite.config.ts           # Vite configuration
+├── tsconfig.json            # TypeScript config
+├── tsconfig.app.json        # App-specific TS config
+└── package.json             # Dependencies and scripts
 ```
 
 ## Project Architecture
@@ -191,7 +226,14 @@ const healthPercentage = selectHealthPercentage(state);
 #### 3. **Component Architecture**
 - **Smart Components**: Pages (`GamePage`, `HomePage`) handle orchestration
 - **Dumb Components**: Presentational components (`GameHeader`, `ChoicesList`)
-- **Container/Presenter Pattern**: Separation of data fetching and presentation
+- **Component Composition**: Complex UIs built from smaller, focused components
+  - `GameLayout`: Reusable layout wrapper eliminating duplication
+  - `GameContent`: Main game content display
+  - `GameErrorDisplay` & `GameErrorBanner`: Specialized error components
+- **Custom Hooks Pattern**: Business logic extracted into reusable hooks
+  - `useGameData`: Handles data loading, validation, and error handling
+  - `useGameActions`: Centralizes all game action handlers
+  - `useBooks`: Provides books context access
 
 #### 4. **Service Layer Pattern**
 - **API Abstraction**: `services/booksApi.ts` encapsulates all API calls
@@ -230,20 +272,36 @@ const healthPercentage = selectHealthPercentage(state);
        │                    │
        ▼                    ▼
 ┌─────────────┐      ┌──────────────┐
-│   Pages     │─────▶│  Components  │
-│ (Orchestr.) │      │ (Present.)    │
-└─────────────┘      └───────────────┘
+│Custom Hooks │─────▶│   Pages      │
+│(useGameData)│      │(Orchestrator)│
+│(useGameAct.)│      └──────┬───────┘
+└─────────────┘             │
+                            ▼
+                   ┌─────────────────┐
+                   │   Components    │
+                   │  (Composition)  │
+                   │  - GameLayout   │
+                   │  - GameContent  │
+                   │  - GameHeader   │
+                   └─────────────────┘
 ```
 
 ### Key Architectural Decisions
 
 1. **No Redux**: Context API + useReducer sufficient for state needs
-2. **Zod Validation**: Runtime type safety for API responses
-3. **Selectors Pattern**: Derived state calculated, not stored
-4. **Intent-Driven Actions**: UI dispatches "what" not "how"
-5. **Error Boundaries**: Graceful error handling at component boundaries
-6. **AbortController**: Request cancellation for cleanup
-7. **React Compiler**: Automatic optimization via Babel plugin
+2. **Custom Hooks for Logic Extraction**: Business logic separated from components via hooks
+   - `useGameData`: Encapsulates data fetching and error handling
+   - `useGameActions`: Centralizes all user interactions and navigation
+3. **Zod Validation**: Runtime type safety for API responses
+4. **Selectors Pattern**: Derived state calculated, not stored
+5. **Intent-Driven Actions**: UI dispatches "what" not "how"
+6. **Component Composition**: Large components broken into smaller, focused pieces
+   - GamePage (448 → 136 lines) through composition
+   - Reusable layout and content components
+7. **Error Boundaries**: Graceful error handling at component boundaries
+8. **AbortController**: Request cancellation for cleanup in hooks
+9. **React Compiler**: Automatic optimization via Babel plugin
+10. **Single Responsibility**: Each component/hook has one clear purpose
 
 ### Testing Strategy
 

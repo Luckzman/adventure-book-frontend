@@ -14,7 +14,7 @@ export const FilterButton = ({
     return (
         <button
             type="button"
-            className={`rounded-full border border-[#F3DFB7] bg-[#F3EBE2] px-4 py-1 text-sm font-medium text-[#514135] transition-colors hover:bg-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${isActive ? 'bg-amber-200 text-amber-900 hover:bg-amber-300' : ''
+            className={`rounded-full border border-[#F3DFB7] bg-[#F3EBE2] px-4 py-1 text-sm font-medium text-stone-900 transition-colors hover:bg-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 cursor-pointer ${isActive ? 'bg-amber-300 text-amber-950 hover:bg-amber-400 border-amber-500' : ''
                 } ${className}`}
             aria-pressed={isActive}
             {...props}

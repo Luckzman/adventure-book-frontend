@@ -134,7 +134,7 @@ export const AdventureLibrary = ({
                                 setActiveFilters([]);
                                 onFilterChange?.([]);
                             }}
-                            className="text-sm font-medium text-[#433025] hover:text-amber-600 transition-colors px-2"
+                            className="text-sm font-medium text-stone-900 hover:text-amber-700 transition-colors px-2 cursor-pointer"
                             aria-label="Clear all filters"
                         >
                             Clear All

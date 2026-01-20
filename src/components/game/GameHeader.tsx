@@ -40,10 +40,10 @@ export const GameHeader = ({
 
     const healthStatus = healthStatusProp ?? getHealthStatus();
     const healthColorClasses = {
-        healthy: 'bg-green-500 text-white',
-        warning: 'bg-yellow-500 text-white',
-        danger: 'bg-orange-500 text-white',
-        critical: 'bg-red-600 text-white',
+        healthy: 'text-green-500',
+        warning: 'text-yellow-500',
+        danger: 'text-orange-500',
+        critical: 'text-red-600',
     };
 
     const healthBgClasses = {
@@ -61,7 +61,7 @@ export const GameHeader = ({
                 <div className="flex justify-between items-center gap-4">
                     <button
                         onClick={onBack}
-                        className="flex items-center gap-2 text-[#433025] hover:text-amber-600 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded"
+                        className="flex items-center gap-2 text-stone-800 hover:text-amber-700 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded"
                         aria-label="Back to Library"
                     >
                         <ArrowLeft className="h-5 w-5" />
@@ -83,7 +83,7 @@ export const GameHeader = ({
                 <div className="flex items-center gap-4">
                     {/* Game Title Button */}
                     <button
-                        className="flex items-center gap-2 text-center bg-[#F3EBE2] border border-[#F3DFB7] rounded-full px-4 py-1 text-[#433025] font-serif hover:bg-[#F3DFB7] transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                        className="flex items-center gap-2 text-center bg-[#F3EBE2] border border-[#F3DFB7] rounded-full px-4 py-1 text-stone-900 font-serif hover:bg-[#F3DFB7] transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
                         aria-label="Game Title"
                     >
                         <BookOpen className="h-4 w-4" />
@@ -92,7 +92,7 @@ export const GameHeader = ({
 
                     {/* Health Display with Visual Feedback */}
                     <div
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${healthBgClasses[healthStatus]} border-opacity-30`}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full border border-stone-400 transition-all ${healthBgClasses[healthStatus]}`}
                         title={`Health: ${health}/${maxHealth} (${healthPercentage}%)`}
                     >
                         <Heart
@@ -111,7 +111,7 @@ export const GameHeader = ({
                     {onPause && onResume && (
                         <button
                             onClick={isPaused ? onResume : onPause}
-                            className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 font-serif hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                            className="flex items-center gap-2 bg-white border border-stone-400 rounded-lg px-4 py-2 text-stone-900 font-serif hover:bg-stone-50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
                             aria-label={isPaused ? 'Resume Game' : 'Pause Game'}
                         >
                             {isPaused ? (
@@ -131,7 +131,7 @@ export const GameHeader = ({
                     {/* Save Progress Button */}
                     <button
                         onClick={onSave}
-                        className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 font-serif hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                        className="flex items-center gap-2 bg-white border border-stone-400 rounded-lg px-4 py-2 text-stone-900 font-serif hover:bg-stone-50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
                         aria-label="Save Progress"
                     >
                         <Save className="h-4 w-4" />

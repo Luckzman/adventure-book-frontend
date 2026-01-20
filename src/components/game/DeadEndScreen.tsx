@@ -35,14 +35,14 @@ export const DeadEndScreen = ({ currentSection, onRestart, onBackToLibrary }: De
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
                 <button
                     onClick={onRestart}
-                    className="flex items-center justify-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium"
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium cursor-pointer"
                 >
                     <RotateCcw className="h-5 w-5" />
                     Restart Adventure
                 </button>
                 <button
                     onClick={onBackToLibrary}
-                    className="flex items-center justify-center gap-2 px-6 py-3 bg-stone-200 text-stone-800 rounded-lg hover:bg-stone-300 transition-colors font-medium"
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-stone-300 text-stone-900 rounded-lg hover:bg-stone-400 transition-colors font-medium cursor-pointer"
                 >
                     <Home className="h-5 w-5" />
                     Back to Library
