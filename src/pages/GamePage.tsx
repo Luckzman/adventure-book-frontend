@@ -11,9 +11,13 @@ import {
     selectChoices,
     selectGameTitle,
     selectIsGameActive,
+    selectIsGamePaused,
 } from '../domain/game/gameSelectors';
 import { ConsequenceFeedback } from '../components/game/ConsequenceFeedback';
 import { GameOverScreen } from '../components/game/GameOverScreen';
+import { DeadEndScreen } from '../components/game/DeadEndScreen';
+import { PauseOverlay } from '../components/game/PauseOverlay';
+import { formatErrorMessage, getErrorSuggestion } from '../utils/errorMessages';
 
 export const GamePage = () => {
     const { gamePath } = useParams<{ gamePath: string }>();
@@ -67,10 +71,15 @@ export const GamePage = () => {
                     });
                 }
             } catch (err) {
-                const errorMessage =
-                    err instanceof Error
-                        ? err.message
-                        : 'An unexpected error occurred while loading the game.';
+                // Format error message to be user-friendly
+                const rawError = err instanceof Error ? err : new Error(String(err));
+                const friendlyMessage = formatErrorMessage(rawError);
+                const suggestion = getErrorSuggestion(rawError);
+
+                const errorMessage = suggestion
+                    ? `${friendlyMessage}\n\n${suggestion}`
+                    : friendlyMessage;
+
                 dispatch({
                     type: 'LOAD_GAME_ERROR',
                     payload: errorMessage,
@@ -109,6 +118,14 @@ export const GamePage = () => {
         });
     };
 
+    const handlePause = () => {
+        dispatch({ type: 'PAUSE_GAME' });
+    };
+
+    const handleResume = () => {
+        dispatch({ type: 'RESUME_GAME' });
+    };
+
     const handleRestart = () => {
         dispatch({ type: 'RESET_GAME' });
         // Reload game data
@@ -129,6 +146,7 @@ export const GamePage = () => {
     const currentSection = selectCurrentSection(state);
     const choices = selectChoices(state);
     const gameTitle = selectGameTitle(state);
+    const isPaused = selectIsGamePaused(state);
 
     // Show game over screen if player died or game ended
     if (state.status === 'died' || state.status === 'ended') {
@@ -138,13 +156,48 @@ export const GamePage = () => {
                     gameTitle={gameTitle}
                     health={state.health}
                     maxHealth={state.maxHealth}
+                    isPaused={isPaused}
                     onBack={handleBack}
                     onSave={handleSave}
+                    onPause={handlePause}
+                    onResume={handleResume}
                 />
+                {/* Show pause overlay when game is paused */}
+                {isPaused && (
+                    <PauseOverlay
+                        onResume={handleResume}
+                        onSave={handleSave}
+                        onBackToLibrary={handleBack}
+                    />
+                )}
                 <main className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-0 py-8 sm:py-12">
                     <GameOverScreen
                         status={state.status}
-                        health={state.health}
+                        currentSection={currentSection}
+                        onRestart={handleRestart}
+                        onBackToLibrary={handleBack}
+                    />
+                </main>
+            </div>
+        );
+    }
+
+    // Show dead end screen if player reached a dead end
+    if (state.status === 'dead_end') {
+        return (
+            <div className="min-h-screen bg-stone-50">
+                <GameHeader
+                    gameTitle={gameTitle}
+                    health={state.health}
+                    maxHealth={state.maxHealth}
+                    isPaused={isPaused}
+                    onBack={handleBack}
+                    onSave={handleSave}
+                    onPause={handlePause}
+                    onResume={handleResume}
+                />
+                <main className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-0 py-8 sm:py-12">
+                    <DeadEndScreen
                         currentSection={currentSection}
                         onRestart={handleRestart}
                         onBackToLibrary={handleBack}
@@ -160,9 +213,20 @@ export const GamePage = () => {
                 gameTitle={gameTitle}
                 health={state.health}
                 maxHealth={state.maxHealth}
+                isPaused={isPaused}
                 onBack={handleBack}
                 onSave={handleSave}
+                onPause={handlePause}
+                onResume={handleResume}
             />
+            {/* Show pause overlay when game is paused */}
+            {isPaused && (
+                <PauseOverlay
+                    onResume={handleResume}
+                    onSave={handleSave}
+                    onBackToLibrary={handleBack}
+                />
+            )}
             <main className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-0 py-8 sm:py-12">
                 {state.status === 'loading' ? (
                     <div className="flex justify-center items-center py-12">
@@ -170,10 +234,25 @@ export const GamePage = () => {
                     </div>
                 ) : state.status === 'error' ? (
                     <div className="bg-white rounded-lg shadow-md p-8 border border-[#F9ECD5]">
-                        <h2 className="text-2xl font-bold text-[#433025] mb-4 text-center">Error Loading Game</h2>
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                            <p className="text-red-800 font-semibold mb-2">Validation Errors:</p>
-                            <pre className="text-sm text-red-700 whitespace-pre-wrap font-mono">{state.error}</pre>
+                        <div className="text-center mb-6">
+                            <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
+                                <svg
+                                    className="h-8 w-8 text-red-600"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                </svg>
+                            </div>
+                            <h2 className="text-2xl font-bold text-[#433025] mb-2">Unable to Load Adventure</h2>
+                            <p className="text-stone-600">We encountered a problem loading this adventure.</p>
+                            <p className="text-sm text-red-700 whitespace-pre-wrap font-mono mt-2 border border-red-200 rounded-lg p-2 max-w-md mx-auto">{state.error}</p>
                         </div>
                         <div className="text-center">
                             <button
@@ -239,6 +318,7 @@ export const GamePage = () => {
                             content={[currentSection.text]}
                             choices={choices}
                             onChoiceSelect={handleChoiceSelect}
+                            disabled={isPaused}
                         />
                     </>
                 ) : (

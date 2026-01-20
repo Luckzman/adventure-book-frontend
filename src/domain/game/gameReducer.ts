@@ -45,10 +45,30 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
                 error: action.payload,
             };
 
+        case 'PAUSE_GAME':
+            // Only pause if currently playing
+            if (state.status === 'playing') {
+                return {
+                    ...state,
+                    status: 'paused',
+                };
+            }
+            return state;
+
+        case 'RESUME_GAME':
+            // Only resume if currently paused
+            if (state.status === 'paused') {
+                return {
+                    ...state,
+                    status: 'playing',
+                };
+            }
+            return state;
+
         case 'MAKE_CHOICE': {
             const { gotoId, consequence } = action.payload;
 
-            // Check if game is still active
+            // Check if game is still active (not paused, ended, or died)
             if (state.status !== 'playing') {
                 return state;
             }
@@ -56,9 +76,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             // Find target section
             const targetSection = state.gameData?.sections.find((s) => s.id === gotoId);
             if (!targetSection) {
+                // Invalid reference - end game with dead end status
                 return {
                     ...state,
-                    error: `Section "${gotoId}" does not exist. This may be an invalid reference in the book data.`,
+                    status: 'dead_end',
+                    error: `Section "${gotoId}" does not exist. This path leads to a dead end.`,
                 };
             }
 
@@ -80,9 +102,23 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             const isDead = newHealth <= 0;
             const isEndSection = targetSection.type === 'END';
 
+            // Check if section has no options (dead end for NODE sections)
+            const hasNoOptions = !targetSection.options || targetSection.options.length === 0;
+            const isDeadEnd = !isEndSection && hasNoOptions;
+
             // Update visited sections
             const newVisitedSections = new Set(state.visitedSectionIds);
             newVisitedSections.add(gotoId);
+
+            // Determine game status
+            let newStatus: GameState['status'] = 'playing';
+            if (isDead) {
+                newStatus = 'died';
+            } else if (isEndSection) {
+                newStatus = 'ended';
+            } else if (isDeadEnd) {
+                newStatus = 'dead_end';
+            }
 
             return {
                 ...state,
@@ -90,7 +126,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
                 health: newHealth,
                 visitedSectionIds: newVisitedSections,
                 lastConsequence,
-                status: isDead ? 'died' : isEndSection ? 'ended' : 'playing',
+                status: newStatus,
                 error: null, // Clear error on successful navigation
             };
         }

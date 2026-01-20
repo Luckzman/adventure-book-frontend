@@ -3,7 +3,6 @@ import { Trophy, Skull, RotateCcw } from 'lucide-react';
 
 interface GameOverScreenProps {
     status: 'died' | 'ended';
-    health: number;
     currentSection: GameSection | undefined;
     onRestart: () => void;
     onBackToLibrary: () => void;

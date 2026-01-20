@@ -14,7 +14,7 @@ export interface GameState {
     maxHealth: number;
 
     // Game state
-    status: 'loading' | 'playing' | 'ended' | 'died' | 'error';
+    status: 'loading' | 'playing' | 'paused' | 'ended' | 'died' | 'dead_end' | 'error';
     error: string | null;
 
     // Visited sections for progression tracking (derived state)
@@ -47,6 +47,8 @@ export type GameAction =
             } | null;
         };
     }
+    | { type: 'PAUSE_GAME' }
+    | { type: 'RESUME_GAME' }
     | { type: 'RESET_GAME' }
     | { type: 'DISMISS_ERROR' }
     | { type: 'DISMISS_CONSEQUENCE' };

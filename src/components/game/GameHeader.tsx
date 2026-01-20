@@ -1,14 +1,26 @@
-import { ArrowLeft, BookOpen, Save, Heart } from 'lucide-react';
+import { ArrowLeft, BookOpen, Save, Heart, Pause, Play } from 'lucide-react';
 
 interface GameHeaderProps {
     gameTitle: string;
     health?: number;
     maxHealth?: number;
+    isPaused?: boolean;
     onBack?: () => void;
     onSave?: () => void;
+    onPause?: () => void;
+    onResume?: () => void;
 }
 
-export const GameHeader = ({ gameTitle, health = 10, maxHealth = 10, onBack, onSave }: GameHeaderProps) => {
+export const GameHeader = ({
+    gameTitle,
+    health = 10,
+    maxHealth = 10,
+    isPaused = false,
+    onBack,
+    onSave,
+    onPause,
+    onResume,
+}: GameHeaderProps) => {
     // Derive health status for visual feedback
     const healthPercentage = Math.round((health / maxHealth) * 100);
     const getHealthStatus = (): 'healthy' | 'warning' | 'danger' | 'critical' => {
@@ -73,6 +85,7 @@ export const GameHeader = ({ gameTitle, health = 10, maxHealth = 10, onBack, onS
                     {/* Health Display with Visual Feedback */}
                     <div
                         className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${healthBgClasses[healthStatus]} border-opacity-30`}
+                        title={`Health: ${health}/${maxHealth} (${healthPercentage}%)`}
                     >
                         <Heart
                             className={`h-4 w-4 ${healthColorClasses[healthStatus]}`}
@@ -84,15 +97,39 @@ export const GameHeader = ({ gameTitle, health = 10, maxHealth = 10, onBack, onS
                     </div>
                 </div>
 
-                {/* Save Progress Button */}
-                <button
-                    onClick={onSave}
-                    className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 font-serif hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
-                    aria-label="Save Progress"
-                >
-                    <Save className="h-4 w-4" />
-                    <span className="font-serif">Save Progress</span>
-                </button>
+                {/* Pause/Resume and Save Progress Buttons */}
+                <div className="flex items-center gap-3">
+                    {/* Pause/Resume Button */}
+                    {onPause && onResume && (
+                        <button
+                            onClick={isPaused ? onResume : onPause}
+                            className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 font-serif hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                            aria-label={isPaused ? 'Resume Game' : 'Pause Game'}
+                        >
+                            {isPaused ? (
+                                <>
+                                    <Play className="h-4 w-4" />
+                                    <span className="font-serif">Resume</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Pause className="h-4 w-4" />
+                                    <span className="font-serif">Pause</span>
+                                </>
+                            )}
+                        </button>
+                    )}
+
+                    {/* Save Progress Button */}
+                    <button
+                        onClick={onSave}
+                        className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 font-serif hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                        aria-label="Save Progress"
+                    >
+                        <Save className="h-4 w-4" />
+                        <span className="font-serif">Save Progress</span>
+                    </button>
+                </div>
             </div>
         </header>
     );

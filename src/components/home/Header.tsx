@@ -7,7 +7,7 @@ interface HeaderProps {
 export const Header = ({ adventureCount = 4 }: HeaderProps) => {
     return (
         <header
-            className="relative w-full overflow-hidden bg-gradient-to-br from-amber-950 via-amber-900 to-amber-950"
+            className="relative w-full overflow-hidden bg-linear-to-br from-amber-950 via-amber-900 to-amber-950"
             role="banner"
         >
             {/* Background pattern overlay */}
@@ -21,7 +21,7 @@ export const Header = ({ adventureCount = 4 }: HeaderProps) => {
 
             {/* Warm glow effect from left */}
             <div
-                className="absolute left-0 top-0 h-full w-1/3 bg-gradient-to-r from-amber-600/20 to-transparent blur-3xl"
+                className="absolute left-0 top-0 h-full w-1/3 bg-linear-to-r from-amber-600/20 to-transparent blur-3xl"
                 aria-hidden="true"
             />
 
@@ -48,7 +48,9 @@ export const Header = ({ adventureCount = 4 }: HeaderProps) => {
                     <div className="mt-8 flex items-center justify-center gap-2 sm:gap-3">
                         <BookOpen className="h-5 w-5 text-yellow-400 sm:h-6 sm:w-6" />
                         <span className="text-xs font-medium text-white sm:text-sm md:text-base">
-                            {adventureCount} Epic Adventures Available
+                            {adventureCount === 0
+                                ? 'Loading Adventures...'
+                                : `${adventureCount} Epic ${adventureCount === 1 ? 'Adventure' : 'Adventures'} Available`}
                         </span>
                         <Sparkles className="h-5 w-5 text-yellow-400 sm:h-6 sm:w-6" />
                     </div>
