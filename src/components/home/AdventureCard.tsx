@@ -18,7 +18,6 @@ interface AdventureCardProps {
 }
 
 const getDifficultyColor = (difficulty: Adventure['difficulty']) => {
-    console.log('difficulty', difficulty);
     switch (difficulty) {
         case 'Easy':
             return 'bg-[#DDFCE7] border border-[#87EDAE] text-[#196337]';
@@ -32,7 +31,6 @@ const getDifficultyColor = (difficulty: Adventure['difficulty']) => {
 };
 
 export const AdventureCard = ({ adventure }: AdventureCardProps) => {
-    console.log('adventure', adventure);
     const navigate = useNavigate();
     const handleBeginQuest = () => {
         navigate(`/game/${encodeURIComponent(adventure.path)}`);
@@ -47,7 +45,7 @@ export const AdventureCard = ({ adventure }: AdventureCardProps) => {
             </div>
 
             {/* Description */}
-            <p className="text-[#433025] mb-4 flex-grow leading-relaxed">{adventure.description}</p>
+            <p className="text-[#433025] mb-4 grow leading-relaxed">{adventure.description}</p>
 
             {/* Badges Row */}
             <div className="flex flex-wrap gap-2 mb-4">
@@ -93,7 +91,7 @@ export const AdventureCard = ({ adventure }: AdventureCardProps) => {
             {/* Begin Quest Button */}
             <button
                 onClick={handleBeginQuest}
-                className="w-full bg-gradient-to-r from-[#C18033] to-[#EFBF4E] text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:from-[#EFBF4E] hover:to-[#C18033] transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 mt-auto"
+                className="w-full bg-linear-to-r from-[#C18033] to-[#EFBF4E] text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:from-[#EFBF4E] hover:to-[#C18033] transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 mt-auto"
             >
                 <Star className="h-5 w-5" />
                 <span className="text-white font-bold">Begin Quest</span>
