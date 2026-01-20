@@ -1,11 +1,6 @@
 import type { GameState } from './gameTypes';
 import type { GameSection } from '../../services/booksApi';
-
-/**
- * Game selectors
- * Derive state instead of storing redundant values
- * This is a key senior-level pattern
- */
+import { GAME_CONSTANTS } from './gameConstants';
 
 /**
  * Get current section data
@@ -35,9 +30,11 @@ export const selectHealthStatus = (
     state: GameState
 ): 'healthy' | 'warning' | 'danger' | 'critical' => {
     const percentage = selectHealthPercentage(state);
-    if (percentage >= 70) return 'healthy';
-    if (percentage >= 50) return 'warning';
-    if (percentage >= 25) return 'danger';
+    const { HEALTHY, WARNING, DANGER } = GAME_CONSTANTS.HEALTH_THRESHOLDS;
+
+    if (percentage >= HEALTHY) return 'healthy';
+    if (percentage >= WARNING) return 'warning';
+    if (percentage >= DANGER) return 'danger';
     return 'critical';
 };
 

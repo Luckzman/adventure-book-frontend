@@ -12,7 +12,6 @@ interface ConsequenceFeedbackProps {
 /**
  * ConsequenceFeedback Component
  * Shows explicit feedback when player loses health
- * Senior UX thinking: "Health loss should never feel silent or confusing."
  */
 export const ConsequenceFeedback = ({ consequence, onDismiss }: ConsequenceFeedbackProps) => {
     if (consequence.type !== 'LOSE_HEALTH') {

@@ -1,9 +1,12 @@
 import { ArrowLeft, BookOpen, Save, Heart, Pause, Play } from 'lucide-react';
+import { GAME_CONSTANTS } from '../../domain/game/gameConstants';
 
 interface GameHeaderProps {
     gameTitle: string;
     health?: number;
     maxHealth?: number;
+    healthStatus?: 'healthy' | 'warning' | 'danger' | 'critical';
+    healthPercentage?: number;
     isPaused?: boolean;
     onBack?: () => void;
     onSave?: () => void;
@@ -13,24 +16,29 @@ interface GameHeaderProps {
 
 export const GameHeader = ({
     gameTitle,
-    health = 10,
-    maxHealth = 10,
+    health = GAME_CONSTANTS.INITIAL_HEALTH,
+    maxHealth = GAME_CONSTANTS.MAX_HEALTH,
+    healthStatus: healthStatusProp,
+    healthPercentage: healthPercentageProp,
     isPaused = false,
     onBack,
     onSave,
     onPause,
     onResume,
 }: GameHeaderProps) => {
-    // Derive health status for visual feedback
-    const healthPercentage = Math.round((health / maxHealth) * 100);
+    // Use provided health status/percentage or calculate from health values
+    const healthPercentage = healthPercentageProp ?? Math.round((health / maxHealth) * 100);
+
+    // Derive health status if not provided
     const getHealthStatus = (): 'healthy' | 'warning' | 'danger' | 'critical' => {
-        if (healthPercentage >= 70) return 'healthy';
-        if (healthPercentage >= 50) return 'warning';
-        if (healthPercentage >= 25) return 'danger';
+        const { HEALTHY, WARNING, DANGER } = GAME_CONSTANTS.HEALTH_THRESHOLDS;
+        if (healthPercentage >= HEALTHY) return 'healthy';
+        if (healthPercentage >= WARNING) return 'warning';
+        if (healthPercentage >= DANGER) return 'danger';
         return 'critical';
     };
 
-    const healthStatus = getHealthStatus();
+    const healthStatus = healthStatusProp ?? getHealthStatus();
     const healthColorClasses = {
         healthy: 'bg-green-500 text-white',
         warning: 'bg-yellow-500 text-white',

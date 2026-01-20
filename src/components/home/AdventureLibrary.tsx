@@ -3,8 +3,8 @@ import { useState, useMemo } from 'react';
 import { SearchInput } from '../common/SearchInput';
 import { FilterButton } from '../common/FilterButton';
 import { AdventureCardList } from './AdventureCardList';
-import { Loader } from '../common/Loader';
-import { useBooks } from '../../contexts/BooksContext';
+import { AdventureCardListSkeleton } from './AdventureCardListSkeleton';
+import { useBooks } from '../../hooks/useBooks';
 import { type Adventure } from './AdventureCard';
 
 interface AdventureLibraryProps {
@@ -134,9 +134,7 @@ export const AdventureLibrary = ({
 
                 {/* Adventure Cards */}
                 {isLoading ? (
-                    <div className="flex justify-center items-center py-12">
-                        <Loader size="lg" />
-                    </div>
+                    <AdventureCardListSkeleton count={6} />
                 ) : error ? (
                     <div className="text-center py-12">
                         <p className="text-red-600 text-lg mb-2">Error loading adventures</p>
