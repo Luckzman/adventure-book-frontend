@@ -222,12 +222,23 @@ export const fetchGameData = async (path: string): Promise<GameDataResponse | nu
                 continue;
             }
 
-            // For other HTTP errors, throw immediately
-            throw new Error(`Failed to fetch game data: ${response.status} ${response.statusText}`);
+            // For other HTTP errors, create user-friendly error message
+            const status = response.status;
+
+            let errorMessage: string;
+            if (status >= 500) {
+                errorMessage = `The server encountered an error (${status}). Please try again in a moment.`;
+            } else if (status === 404) {
+                errorMessage = `The adventure "${path}" could not be found.`;
+            } else {
+                errorMessage = `Unable to load the adventure (${status}). Please try again.`;
+            }
+
+            throw new Error(errorMessage);
         } catch (error) {
             // Network errors should be thrown immediately (can't retry)
             if (error instanceof TypeError && error.message.includes('fetch')) {
-                throw new Error('Network error: Unable to connect to the server. Please check if the backend is running on http://localhost:8081.');
+                throw new Error('Unable to connect to the server. Please check your internet connection and ensure the backend server is running.');
             }
 
             // If it's an Error we threw (not a 404), re-throw it

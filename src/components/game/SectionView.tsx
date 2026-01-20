@@ -5,9 +5,10 @@ interface SectionViewProps {
     content: string[];
     choices: Choice[];
     onChoiceSelect: (choiceId: string) => void;
+    disabled?: boolean;
 }
 
-export const SectionView = ({ title, content, choices, onChoiceSelect }: SectionViewProps) => {
+export const SectionView = ({ title, content, choices, onChoiceSelect, disabled = false }: SectionViewProps) => {
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6 sm:p-8 border border-[#F9ECD5]">
@@ -26,7 +27,7 @@ export const SectionView = ({ title, content, choices, onChoiceSelect }: Section
             </div>
 
             {choices.length > 0 && (
-                <ChoicesList choices={choices} onChoiceSelect={onChoiceSelect} />
+                <ChoicesList choices={choices} onChoiceSelect={onChoiceSelect} disabled={disabled} />
             )}
         </div>
     );

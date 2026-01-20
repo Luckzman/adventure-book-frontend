@@ -1,10 +1,10 @@
 import { Filter } from 'lucide-react';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { SearchInput } from '../common/SearchInput';
 import { FilterButton } from '../common/FilterButton';
 import { AdventureCardList } from './AdventureCardList';
 import { Loader } from '../common/Loader';
-import { fetchBooks } from '../../services/booksApi';
+import { useBooks } from '../../contexts/BooksContext';
 import { type Adventure } from './AdventureCard';
 
 interface AdventureLibraryProps {
@@ -19,29 +19,10 @@ export const AdventureLibrary = ({
 }: AdventureLibraryProps) => {
     const [searchValue, setSearchValue] = useState('');
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
-    const [adventures, setAdventures] = useState<Adventure[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
-    // Fetch books on component mount
-    useEffect(() => {
-        const loadBooks = async () => {
-            try {
-                setIsLoading(true);
-                setError(null);
-                const books = await fetchBooks();
-                console.log('books', books);
-                setAdventures(books);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'Failed to load adventures');
-                console.error('Error loading books:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        loadBooks();
-    }, []);
+    // Get books from context (fetched once at app level)
+    const { books, isLoading, error } = useBooks();
+    const adventures: Adventure[] = books;
 
     // Extract unique genres and difficulties from fetched books
     const genreFilters = useMemo(() => {

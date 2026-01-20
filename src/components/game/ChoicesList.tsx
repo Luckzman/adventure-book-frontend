@@ -14,9 +14,10 @@ export interface Choice {
 interface ChoicesListProps {
     choices: Choice[];
     onChoiceSelect: (gotoId: string) => void;
+    disabled?: boolean;
 }
 
-export const ChoicesList = ({ choices, onChoiceSelect }: ChoicesListProps) => {
+export const ChoicesList = ({ choices, onChoiceSelect, disabled = false }: ChoicesListProps) => {
     return (
         <div className="mt-8">
             <h3 className="text-xl font-semibold text-[#433025] mb-4">What do you choose?</h3>
@@ -25,7 +26,11 @@ export const ChoicesList = ({ choices, onChoiceSelect }: ChoicesListProps) => {
                     <button
                         key={choice.id}
                         onClick={() => onChoiceSelect(choice.id)}
-                        className="w-full text-left bg-white rounded-lg shadow-md p-5 border border-[#F9ECD5] hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                        disabled={disabled}
+                        className={`w-full text-left bg-white rounded-lg shadow-md p-5 border border-[#F9ECD5] transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${disabled
+                            ? 'opacity-50 cursor-not-allowed'
+                            : 'hover:shadow-lg cursor-pointer'
+                            }`}
                     >
                         <div className="flex items-start gap-4">
                             {/* Number Badge */}

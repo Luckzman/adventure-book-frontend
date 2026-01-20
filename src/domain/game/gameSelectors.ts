@@ -42,20 +42,6 @@ export const selectHealthStatus = (
 };
 
 /**
- * Get progression percentage
- * Derived from visited sections and total sections
- * Example of deriving state instead of storing it
- */
-export const selectProgressionPercentage = (state: GameState): number => {
-    if (!state.gameData || state.gameData.sections.length === 0) {
-        return 0;
-    }
-    const totalSections = state.gameData.sections.length;
-    const visitedCount = state.visitedSectionIds.size;
-    return Math.round((visitedCount / totalSections) * 100);
-};
-
-/**
  * Get choices for current section
  * Derived from current section options
  */
@@ -80,6 +66,13 @@ export const selectChoices = (state: GameState) => {
  */
 export const selectIsGameActive = (state: GameState): boolean => {
     return state.status === 'playing';
+};
+
+/**
+ * Check if game is paused
+ */
+export const selectIsGamePaused = (state: GameState): boolean => {
+    return state.status === 'paused';
 };
 
 /**
