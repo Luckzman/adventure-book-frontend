@@ -27,3 +27,17 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/* Animation for consequence feedback */
+@keyframes pulse-once {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-once {
+  animation: pulse-once 0.5s ease-in-out;
+}

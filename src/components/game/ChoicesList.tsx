@@ -4,6 +4,11 @@ export interface Choice {
     text: string;
     description: string;
     requirement?: string;
+    consequence?: {
+        type: string;
+        value: string;
+        text: string;
+    } | null;
 }
 
 interface ChoicesListProps {
