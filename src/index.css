@@ -30,14 +30,51 @@ body {
 
 /* Animation for consequence feedback */
 @keyframes pulse-once {
-  0%, 100% {
+  0% {
+    transform: scale(1);
     opacity: 1;
   }
   50% {
-    opacity: 0.8;
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0; /* Fade out after one pulse */
   }
 }
 
 .animate-pulse-once {
-  animation: pulse-once 0.5s ease-in-out;
+  animation: pulse-once 3s ease-out forwards;
+}
+
+/* Animations for notification toast */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+.animate-slide-out {
+  animation: slide-out 0.3s ease-out;
 }

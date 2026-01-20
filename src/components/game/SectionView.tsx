@@ -11,7 +11,7 @@ interface SectionViewProps {
 export const SectionView = ({ title, content, choices, onChoiceSelect, disabled = false }: SectionViewProps) => {
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-6 sm:p-8 border border-[#F9ECD5]">
+        <article className="bg-white rounded-lg shadow-md p-6 sm:p-8 border border-[#F9ECD5]">
             {/* Section Title */}
             <h2 className="text-3xl sm:text-4xl font-serif text-center font-bold text-[#433025] mb-6">
                 {title}
@@ -29,6 +29,6 @@ export const SectionView = ({ title, content, choices, onChoiceSelect, disabled 
             {choices.length > 0 && (
                 <ChoicesList choices={choices} onChoiceSelect={onChoiceSelect} disabled={disabled} />
             )}
-        </div>
+        </article>
     );
 };

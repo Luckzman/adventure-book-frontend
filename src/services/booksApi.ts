@@ -1,17 +1,16 @@
 // Books API service
 // Handles all API calls related to fetching books/adventures
 
-export interface BookApiResponse {
-    path: string;
-    title: string;
-    author: string;
-    difficulty: string; // Can be uppercase from API (EASY, MEDIUM, HARD)
-    type: string;
-    duration: string;
-    chapters: number;
-    tags: string | string[] | null | undefined;
-    summary: string;
-}
+import { logger } from '../utils/logger';
+import {
+    BooksApiResponseSchema,
+    GameDataResponseSchema,
+    type BookApiResponse,
+    type GameDataResponse,
+    type GameSection,
+} from './validationSchemas';
+
+export type { BookApiResponse, GameDataResponse };
 
 export interface Book {
     path: string; // Original path from API (e.g., "the-lost-temple.json")
@@ -25,10 +24,10 @@ export interface Book {
     tags: string[];
 }
 
-// Use proxy path in development, or direct URL in production
-const API_BASE_URL = import.meta.env.PROD
-    ? 'http://localhost:8081'
-    : '/api';
+import { config } from '../config/env';
+
+// Use environment variable or default to /api (which uses Vite proxy in dev)
+const API_BASE_URL = config.api.baseUrl;
 
 /**
  * Normalizes tags to an array format
@@ -78,50 +77,41 @@ const mapApiResponseToBook = (apiBook: BookApiResponse): Book => {
 /**
  * Fetches all books from the API
  */
-export const fetchBooks = async (): Promise<Book[]> => {
+export const fetchBooks = async (signal?: AbortSignal): Promise<Book[]> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/service/books`);
-        console.log('response', response);
+        const response = await fetch(`${API_BASE_URL}/service/books`, { signal });
 
         if (!response.ok) {
             throw new Error(`Failed to fetch books: ${response.status} ${response.statusText}`);
         }
 
-        const data: BookApiResponse[] = await response.json();
-        return data.map(mapApiResponseToBook);
+        const rawData = await response.json();
+
+        // Validate API response structure
+        try {
+            const validatedData = BooksApiResponseSchema.parse(rawData);
+            return validatedData.map(mapApiResponseToBook);
+        } catch (validationError) {
+            // If validation fails, provide helpful error message
+            logger.error('Books data validation failed:', validationError);
+            throw new Error(
+                'Invalid books data format received from server. Please contact support if this issue persists.'
+            );
+        }
     } catch (error) {
-        console.error('Error fetching books:', error);
+        if (error instanceof Error && error.name === 'AbortError') {
+            logger.debug('Books fetch was aborted');
+            throw error;
+        }
+        logger.error('Error fetching books:', error);
         throw error;
     }
 };
 
 /**
- * Game data response structure from API
+ * Re-export types from validation schemas
  */
-export interface GameOption {
-    description: string;
-    gotoId: string;
-    consequence: {
-        type: string;
-        value: string;
-        text: string;
-    } | null;
-}
-
-export interface GameSection {
-    id: string;
-    text: string;
-    type: 'BEGIN' | 'NODE' | 'END';
-    options: GameOption[] | null;
-}
-
-export interface GameDataResponse {
-    title: string;
-    author: string;
-    difficulty: string;
-    type: string;
-    sections: GameSection[];
-}
+export type { GameOption, GameSection } from './validationSchemas';
 
 /**
  * Validation result for book data
@@ -194,7 +184,7 @@ export const validateSectionForNavigation = (
  * Fetches game data for a specific book by path
  * Tries multiple endpoint formats to handle different backend configurations
  */
-export const fetchGameData = async (path: string): Promise<GameDataResponse | null> => {
+export const fetchGameData = async (path: string, signal?: AbortSignal): Promise<GameDataResponse | null> => {
     // Try different endpoint formats in order of likelihood
     const endpointFormats = [
         `${API_BASE_URL}/books/${path}`, // Standard format: /books/{path}
@@ -205,19 +195,42 @@ export const fetchGameData = async (path: string): Promise<GameDataResponse | nu
 
     for (const url of endpointFormats) {
         try {
-            console.log('Trying endpoint:', url);
-
-            const response = await fetch(url);
+            const response = await fetch(url, { signal });
 
             if (response.ok) {
-                const data = await response.json();
-                console.log('Game data received from:', url);
-                return data as GameDataResponse;
+                const rawData = await response.json();
+
+                // Validate API response structure
+                try {
+                    // Use safeParse to get better error handling
+                    const validationResult = GameDataResponseSchema.safeParse(rawData);
+
+                    if (!validationResult.success) {
+                        // Log validation errors for debugging
+                        logger.error('Game data validation failed:', validationResult.error.format());
+                        throw new Error(
+                            `Invalid game data format received from server. The adventure "${path}" may be corrupted.`
+                        );
+                    }
+
+                    logger.debug('Game data received from:', url);
+                    return validationResult.data;
+                } catch (error) {
+                    // Re-throw if it's already our error
+                    if (error instanceof Error && error.message.includes('Invalid game data format')) {
+                        throw error;
+                    }
+                    // If validation fails, provide helpful error message
+                    logger.error('Game data validation failed:', error);
+                    throw new Error(
+                        `Invalid game data format received from server. The adventure "${path}" may be corrupted.`
+                    );
+                }
             }
 
             // If 404, try next format
             if (response.status === 404) {
-                console.log(`404 for ${url}, trying next format...`);
+                logger.debug(`404 for ${url}, trying next format...`);
                 lastError = new Error(`Game not found: The adventure "${path}" could not be found on the server.`);
                 continue;
             }
@@ -236,6 +249,12 @@ export const fetchGameData = async (path: string): Promise<GameDataResponse | nu
 
             throw new Error(errorMessage);
         } catch (error) {
+            // Handle abort errors
+            if (error instanceof Error && error.name === 'AbortError') {
+                logger.debug('Game data fetch was aborted');
+                throw error;
+            }
+
             // Network errors should be thrown immediately (can't retry)
             if (error instanceof TypeError && error.message.includes('fetch')) {
                 throw new Error('Unable to connect to the server. Please check your internet connection and ensure the backend server is running.');

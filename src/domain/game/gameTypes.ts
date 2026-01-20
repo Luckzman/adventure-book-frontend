@@ -53,14 +53,16 @@ export type GameAction =
     | { type: 'DISMISS_ERROR' }
     | { type: 'DISMISS_CONSEQUENCE' };
 
+import { GAME_CONSTANTS } from './gameConstants';
+
 /**
  * Initial game state
  */
 export const INITIAL_GAME_STATE: GameState = {
     gameData: null,
     currentSectionId: null,
-    health: 10,
-    maxHealth: 10,
+    health: GAME_CONSTANTS.INITIAL_HEALTH,
+    maxHealth: GAME_CONSTANTS.MAX_HEALTH,
     status: 'loading',
     error: null,
     visitedSectionIds: new Set(),
