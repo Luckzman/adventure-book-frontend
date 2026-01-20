@@ -13,7 +13,7 @@ export const GameHeader = ({ gameTitle, onBack, onSave }: GameHeaderProps) => {
                 {/* Left side: Back to Library and Game Title */}
                 {/* <div className="flex items-center gap-4"> */}
                 {/* Back to Library Button */}
-                <div className="w-full flex justify-between items-center gap-4">
+                <div className="flex justify-between items-center gap-4">
                     <button
                         onClick={onBack}
                         className="flex items-center gap-2 text-[#433025] hover:text-amber-600 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded"
@@ -23,14 +23,14 @@ export const GameHeader = ({ gameTitle, onBack, onSave }: GameHeaderProps) => {
                         <span className="text-sm font-medium">Back to Library</span>
                     </button>
 
-                    <button
+                    {/* <button
                         onClick={onSave}
                         className="flex md:hidden items-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 font-serif hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
                         aria-label="Save Progress"
                     >
                         <Save className="h-4 w-4" />
                         <span className="font-serif">Save Progress</span>
-                    </button>
+                    </button> */}
 
                 </div>
 
@@ -47,7 +47,7 @@ export const GameHeader = ({ gameTitle, onBack, onSave }: GameHeaderProps) => {
                 {/* Save Progress Button */}
                 <button
                     onClick={onSave}
-                    className="hidden md:flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 font-serif hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                    className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 font-serif hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
                     aria-label="Save Progress"
                 >
                     <Save className="h-4 w-4" />

@@ -1,7 +1,8 @@
 import { Clock, BookOpen, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export interface Adventure {
-    id: string;
+    path: string; // Original path from API (e.g., "the-lost-temple.json")
     title: string;
     author: string;
     description: string;
@@ -14,7 +15,6 @@ export interface Adventure {
 
 interface AdventureCardProps {
     adventure: Adventure;
-    onBeginQuest?: (adventureId: string) => void;
 }
 
 const getDifficultyColor = (difficulty: Adventure['difficulty']) => {
@@ -31,10 +31,11 @@ const getDifficultyColor = (difficulty: Adventure['difficulty']) => {
     }
 };
 
-export const AdventureCard = ({ adventure, onBeginQuest }: AdventureCardProps) => {
+export const AdventureCard = ({ adventure }: AdventureCardProps) => {
     console.log('adventure', adventure);
+    const navigate = useNavigate();
     const handleBeginQuest = () => {
-        onBeginQuest?.(adventure.id);
+        navigate(`/game/${encodeURIComponent(adventure.path)}`);
     };
 
     return (
