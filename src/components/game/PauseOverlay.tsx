@@ -40,7 +40,7 @@ export const PauseOverlay = ({
                     {/* Resume Button */}
                     <button
                         onClick={onResume}
-                        className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium"
+                        className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium cursor-pointer"
                     >
                         <Play className="h-5 w-5" />
                         Resume Game
@@ -50,7 +50,7 @@ export const PauseOverlay = ({
                     {onSave && (
                         <button
                             onClick={onSave}
-                            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-300 text-gray-800 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white border border-stone-400 text-stone-900 rounded-lg hover:bg-stone-50 transition-colors font-medium cursor-pointer"
                         >
                             <Save className="h-5 w-5" />
                             Save Progress
@@ -61,7 +61,7 @@ export const PauseOverlay = ({
                     {(onBackToLibrary || onShowBackConfirm) && (
                         <button
                             onClick={handleBackClick}
-                            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-stone-200 text-stone-800 rounded-lg hover:bg-stone-300 transition-colors font-medium"
+                            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-stone-300 text-stone-900 rounded-lg hover:bg-stone-400 transition-colors font-medium cursor-pointer"
                         >
                             <Home className="h-5 w-5" />
                             Back to Library

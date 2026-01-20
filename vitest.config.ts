@@ -14,7 +14,7 @@ export default defineConfig({
     ],
     test: {
         globals: true,
-        environment: 'jsdom',
+        environment: 'happy-dom', // Use happy-dom instead of jsdom for better CI compatibility
         setupFiles: './src/test/setup.ts',
         coverage: {
             provider: 'v8',
