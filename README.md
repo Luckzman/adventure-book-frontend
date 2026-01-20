@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/test.yml/badge.svg)](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/test.yml)
 [![Build](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/build.yml/badge.svg)](https://github.com/Luckzman/adventure-book-frontend/actions/workflows/build.yml)
-[![Coverage](https://raw.githubusercontent.com/Luckzman/adventure-book-frontend/fix/coverage-badge-generation/coverage/coverage-badge.svg)](./coverage)
+[![Coverage](https://raw.githubusercontent.com/Luckzman/adventure-book-frontend/fix/add-coverage-badge-link/coverage/coverage-badge.svg)](./coverage)
 
 An interactive adventure book web application built with React, TypeScript, and Tailwind CSS.
 
