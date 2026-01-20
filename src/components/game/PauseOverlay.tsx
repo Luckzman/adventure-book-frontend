@@ -4,6 +4,8 @@ interface PauseOverlayProps {
     onResume: () => void;
     onSave?: () => void;
     onBackToLibrary?: () => void;
+    showBackConfirm?: boolean;
+    onShowBackConfirm?: () => void;
 }
 
 /**
@@ -11,7 +13,20 @@ interface PauseOverlayProps {
  * Shows when game is paused, blocking all game interactions
  * Provides clear options: Resume, Save, or Return to Library
  */
-export const PauseOverlay = ({ onResume, onSave, onBackToLibrary }: PauseOverlayProps) => {
+export const PauseOverlay = ({
+    onResume,
+    onSave,
+    onBackToLibrary,
+    showBackConfirm = false,
+    onShowBackConfirm,
+}: PauseOverlayProps) => {
+    const handleBackClick = () => {
+        if (onShowBackConfirm) {
+            onShowBackConfirm();
+        } else if (onBackToLibrary) {
+            onBackToLibrary();
+        }
+    };
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-8 border border-[#F9ECD5]">
@@ -45,9 +60,9 @@ export const PauseOverlay = ({ onResume, onSave, onBackToLibrary }: PauseOverlay
                     )}
 
                     {/* Back to Library Button */}
-                    {onBackToLibrary && (
+                    {(onBackToLibrary || onShowBackConfirm) && (
                         <button
-                            onClick={onBackToLibrary}
+                            onClick={handleBackClick}
                             className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-stone-200 text-stone-800 rounded-lg hover:bg-stone-300 transition-colors font-medium"
                         >
                             <Home className="h-5 w-5" />

@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useState } from 'react';
 import { GameHeader } from '../components/game/GameHeader';
 import { SectionView } from '../components/game/SectionView';
 import { GamePageSkeleton } from '../components/game/GamePageSkeleton';
@@ -20,6 +20,7 @@ import { GameOverScreen } from '../components/game/GameOverScreen';
 import { DeadEndScreen } from '../components/game/DeadEndScreen';
 import { PauseOverlay } from '../components/game/PauseOverlay';
 import { ErrorBoundary } from '../components/common/ErrorBoundary';
+import { ConfirmDialog } from '../components/common/ConfirmDialog';
 import { formatErrorMessage, getErrorSuggestion } from '../utils/errorMessages';
 import { logger } from '../utils/logger';
 
@@ -27,6 +28,7 @@ export const GamePage = () => {
     const { gamePath } = useParams<{ gamePath: string }>();
     const navigate = useNavigate();
     const [state, dispatch] = useReducer(gameReducer, INITIAL_GAME_STATE);
+    const [showBackConfirm, setShowBackConfirm] = useState(false);
 
     // Fetch book title and game data from API
     useEffect(() => {
@@ -128,8 +130,24 @@ export const GamePage = () => {
     }, [gamePath]);
 
     const handleBack = () => {
+        // Show confirmation dialog if game is in progress
+        if (state.status === 'playing' || state.status === 'paused') {
+            setShowBackConfirm(true);
+        } else {
+            // No confirmation needed if game hasn't started or already ended
+            dispatch({ type: 'DISMISS_ERROR' });
+            navigate('/');
+        }
+    };
+
+    const handleConfirmBack = () => {
+        setShowBackConfirm(false);
         dispatch({ type: 'DISMISS_ERROR' });
         navigate('/');
+    };
+
+    const handleCancelBack = () => {
+        setShowBackConfirm(false);
     };
 
     const handleSave = () => {
@@ -229,9 +247,19 @@ export const GamePage = () => {
                     <PauseOverlay
                         onResume={handleResume}
                         onSave={handleSave}
-                        onBackToLibrary={handleBack}
+                        onShowBackConfirm={handleBack}
                     />
                 )}
+                {/* Confirmation dialog for back to library */}
+                <ConfirmDialog
+                    isOpen={showBackConfirm}
+                    title="Leave Adventure?"
+                    message="Returning to the library will cause you to lose your current game progress. Are you sure you want to continue?"
+                    confirmText="Leave Adventure"
+                    cancelText="Continue Playing"
+                    onConfirm={handleConfirmBack}
+                    onCancel={handleCancelBack}
+                />
                 <main className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-0 py-8 sm:py-12">
                     <GameOverScreen
                         status={state.status}
@@ -295,9 +323,19 @@ export const GamePage = () => {
                     <PauseOverlay
                         onResume={handleResume}
                         onSave={handleSave}
-                        onBackToLibrary={handleBack}
+                        onShowBackConfirm={handleBack}
                     />
                 )}
+                {/* Confirmation dialog for back to library */}
+                <ConfirmDialog
+                    isOpen={showBackConfirm}
+                    title="Leave Adventure?"
+                    message="Returning to the library will cause you to lose your current game progress. Are you sure you want to continue?"
+                    confirmText="Leave Adventure"
+                    cancelText="Continue Playing"
+                    onConfirm={handleConfirmBack}
+                    onCancel={handleCancelBack}
+                />
                 <main className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-0 py-8 sm:py-12">
                     {state.status === 'loading' ? (
                         <GamePageSkeleton />
