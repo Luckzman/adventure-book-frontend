@@ -27,4 +27,3 @@ dist-ssr
 coverage/
 *.lcov
 !coverage/coverage-badge.svg
-!coverage/coverage-badge.svg
