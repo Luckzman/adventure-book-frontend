@@ -4,7 +4,6 @@ interface PauseOverlayProps {
     onResume: () => void;
     onSave?: () => void;
     onBackToLibrary?: () => void;
-    showBackConfirm?: boolean;
     onShowBackConfirm?: () => void;
 }
 
@@ -17,7 +16,6 @@ export const PauseOverlay = ({
     onResume,
     onSave,
     onBackToLibrary,
-    showBackConfirm = false,
     onShowBackConfirm,
 }: PauseOverlayProps) => {
     const handleBackClick = () => {
