@@ -2,7 +2,7 @@ import { type Adventure } from './AdventureCard';
 
 export const mockAdventures: Adventure[] = [
     {
-        id: '1',
+        path: 'the-crystal-caverns.json',
         title: 'The Crystal Caverns',
         author: 'Elena Brightwater',
         description:
@@ -14,7 +14,7 @@ export const mockAdventures: Adventure[] = [
         tags: ['Magic', 'Underground', 'Crystals'],
     },
     {
-        id: '2',
+        path: 'pirates-of-the-jade-sea.json',
         title: 'Pirates of the Jade Sea',
         author: 'Captain Blackwater',
         description:
@@ -26,7 +26,7 @@ export const mockAdventures: Adventure[] = [
         tags: ['Pirates', 'Ocean', 'Treasure'],
     },
     {
-        id: '3',
+        path: 'the-last-wizards-tower.json',
         title: "The Last Wizard's Tower",
         author: 'Sage Moonshadow',
         description:
