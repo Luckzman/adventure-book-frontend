@@ -24,12 +24,8 @@ export const AdventureLibrary = ({
     const { books, isLoading, error } = useBooks();
     const adventures: Adventure[] = books;
 
-    // Extract unique genres and difficulties from fetched books
-    const genreFilters = useMemo(() => {
-        const genres = new Set(adventures.map((adv) => adv.genre));
-        return Array.from(genres).sort();
-    }, [adventures]);
-
+    // Use predefined genre filters as shown in the design
+    const genreFilters = ['Fantasy', 'Adventure', 'High Fantasy', 'Steampunk Mystery'];
     const difficultyFilters = ['Easy', 'Medium', 'Hard'];
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +100,7 @@ export const AdventureLibrary = ({
 
                 {/* Filters Section */}
                 <div className="mx-auto flex flex-col lg:flex-row lg:items-center justify-center max-w-4xl gap-2">
-                    <div className=" flex items-center gap-2 md:pb-2">
+                    <div className="flex items-center gap-2 md:pb-2">
                         <Filter className="h-4 w-4 text-stone-600" aria-hidden="true" />
                         <span className="text-sm font-medium text-stone-700">Filters:</span>
                     </div>
@@ -130,6 +126,20 @@ export const AdventureLibrary = ({
                             />
                         ))}
                     </div>
+
+                    {/* Clear All Button */}
+                    {activeFilters.length > 0 && (
+                        <button
+                            onClick={() => {
+                                setActiveFilters([]);
+                                onFilterChange?.([]);
+                            }}
+                            className="text-sm font-medium text-[#433025] hover:text-amber-600 transition-colors px-2"
+                            aria-label="Clear all filters"
+                        >
+                            Clear All
+                        </button>
+                    )}
                 </div>
 
                 {/* Adventure Cards */}
