@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { useGameData } from '../useGameData';
 import * as booksApi from '../../services/booksApi';
-import type { GameAction } from '../../domain/game/gameTypes';
 
 // Mock the booksApi module
 vi.mock('../../services/booksApi', () => ({
@@ -145,7 +144,7 @@ describe('useGameData', () => {
 
     it('aborts request on unmount', async () => {
         vi.mocked(booksApi.fetchGameData).mockImplementationOnce(
-            () => new Promise(() => {}) // Never resolves
+            () => new Promise(() => { }) // Never resolves
         );
 
         const { unmount } = renderHook(() => useGameData({ gamePath: 'test.json', dispatch: mockDispatch }));

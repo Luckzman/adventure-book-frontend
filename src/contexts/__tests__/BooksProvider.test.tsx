@@ -66,7 +66,7 @@ describe('BooksProvider', () => {
 
     it('shows loading state initially', () => {
         vi.mocked(booksApi.fetchBooks).mockImplementationOnce(
-            () => new Promise(() => {}) // Never resolves
+            () => new Promise(() => { }) // Never resolves
         );
 
         const { getByTestId } = render(
@@ -95,7 +95,7 @@ describe('BooksProvider', () => {
 
     it('aborts request on unmount', () => {
         vi.mocked(booksApi.fetchBooks).mockImplementationOnce(
-            () => new Promise(() => {}) // Never resolves
+            () => new Promise(() => { }) // Never resolves
         );
 
         const { unmount } = render(

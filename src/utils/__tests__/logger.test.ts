@@ -8,10 +8,10 @@ describe('logger', () => {
     let consoleDebugSpy: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
-        consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-        consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-        consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-        consoleDebugSpy = vi.spyOn(console, 'debug').mockImplementation(() => {});
+        consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => { });
+        consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+        consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+        consoleDebugSpy = vi.spyOn(console, 'debug').mockImplementation(() => { });
     });
 
     afterEach(() => {

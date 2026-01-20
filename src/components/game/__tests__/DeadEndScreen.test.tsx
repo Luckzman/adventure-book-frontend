@@ -5,6 +5,7 @@ import type { GameSection } from '../../../services/booksApi';
 
 describe('DeadEndScreen', () => {
     const defaultProps = {
+        currentSection: undefined,
         onRestart: vi.fn(),
         onBackToLibrary: vi.fn(),
     };
@@ -27,13 +28,13 @@ describe('DeadEndScreen', () => {
     });
 
     it('does not display section text when not provided', () => {
-        render(<DeadEndScreen {...defaultProps} />);
+        render(<DeadEndScreen {...defaultProps} currentSection={undefined} />);
         expect(screen.queryByText(/"/)).not.toBeInTheDocument();
     });
 
     it('calls onRestart when restart button is clicked', () => {
         const onRestart = vi.fn();
-        render(<DeadEndScreen {...defaultProps} onRestart={onRestart} />);
+        render(<DeadEndScreen {...defaultProps} onRestart={onRestart} currentSection={undefined} />);
         const restartButton = screen.getByText('Restart Adventure');
         restartButton.click();
         expect(onRestart).toHaveBeenCalledTimes(1);
@@ -41,7 +42,7 @@ describe('DeadEndScreen', () => {
 
     it('calls onBackToLibrary when back button is clicked', () => {
         const onBackToLibrary = vi.fn();
-        render(<DeadEndScreen {...defaultProps} onBackToLibrary={onBackToLibrary} />);
+        render(<DeadEndScreen {...defaultProps} onBackToLibrary={onBackToLibrary} currentSection={undefined} />);
         const backButton = screen.getByText('Back to Library');
         backButton.click();
         expect(onBackToLibrary).toHaveBeenCalledTimes(1);

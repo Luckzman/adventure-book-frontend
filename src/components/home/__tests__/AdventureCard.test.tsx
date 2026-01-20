@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { AdventureCard, type Adventure } from '../AdventureCard';
@@ -62,7 +62,7 @@ describe('AdventureCard', () => {
     });
 
     it('applies correct difficulty colors for Easy', () => {
-        const { container } = render(<AdventureCard adventure={mockAdventure} />, { wrapper });
+        render(<AdventureCard adventure={mockAdventure} />, { wrapper });
         const easyBadge = screen.getByText('Easy');
         expect(easyBadge).toHaveClass('bg-[#DDFCE7]');
     });

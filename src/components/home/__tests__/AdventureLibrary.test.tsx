@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { AdventureLibrary } from '../AdventureLibrary';
 import { BooksProvider } from '../../../contexts/BooksProvider';
@@ -82,18 +82,18 @@ describe('AdventureLibrary', () => {
     it('updates search input value', () => {
         render(<AdventureLibrary />, { wrapper });
         const searchInput = screen.getByPlaceholderText('Search adventures...') as HTMLInputElement;
-        
+
         fireEvent.change(searchInput, { target: { value: 'Fantasy' } });
-        
+
         expect(searchInput.value).toBe('Fantasy');
     });
 
     it('toggles filter when clicked', () => {
         render(<AdventureLibrary />, { wrapper });
         const fantasyButton = screen.getByText('Fantasy');
-        
+
         fireEvent.click(fantasyButton);
-        
+
         // Filter button should be active
         expect(fantasyButton.closest('button')).toHaveAttribute('aria-pressed', 'true');
     });
@@ -101,22 +101,22 @@ describe('AdventureLibrary', () => {
     it('shows clear all button when filters are active', () => {
         render(<AdventureLibrary />, { wrapper });
         const fantasyButton = screen.getByText('Fantasy');
-        
+
         fireEvent.click(fantasyButton);
-        
+
         expect(screen.getByText('Clear All')).toBeInTheDocument();
     });
 
     it('clears all filters when clear all is clicked', () => {
         render(<AdventureLibrary />, { wrapper });
         const fantasyButton = screen.getByText('Fantasy');
-        
+
         fireEvent.click(fantasyButton);
         expect(screen.getByText('Clear All')).toBeInTheDocument();
-        
+
         const clearAllButton = screen.getByText('Clear All');
         fireEvent.click(clearAllButton);
-        
+
         expect(screen.queryByText('Clear All')).not.toBeInTheDocument();
     });
 
@@ -124,9 +124,9 @@ describe('AdventureLibrary', () => {
         const onSearchChange = vi.fn();
         render(<AdventureLibrary onSearchChange={onSearchChange} />, { wrapper });
         const searchInput = screen.getByPlaceholderText('Search adventures...');
-        
+
         fireEvent.change(searchInput, { target: { value: 'test' } });
-        
+
         expect(onSearchChange).toHaveBeenCalledWith('test');
     });
 
@@ -134,9 +134,9 @@ describe('AdventureLibrary', () => {
         const onFilterChange = vi.fn();
         render(<AdventureLibrary onFilterChange={onFilterChange} />, { wrapper });
         const fantasyButton = screen.getByText('Fantasy');
-        
+
         fireEvent.click(fantasyButton);
-        
+
         expect(onFilterChange).toHaveBeenCalledWith(['Fantasy']);
     });
 });

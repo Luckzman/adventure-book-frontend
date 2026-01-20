@@ -5,6 +5,7 @@ import type { GameSection } from '../../../services/booksApi';
 
 describe('GameOverScreen', () => {
     const defaultProps = {
+        currentSection: undefined,
         onRestart: vi.fn(),
         onBackToLibrary: vi.fn(),
     };
@@ -16,7 +17,7 @@ describe('GameOverScreen', () => {
     });
 
     it('renders end screen when status is ended', () => {
-        render(<GameOverScreen {...defaultProps} status="ended" />);
+        render(<GameOverScreen {...defaultProps} status="ended" currentSection={undefined} />);
         expect(screen.getByText('The End')).toBeInTheDocument();
         expect(screen.getByText(/Your adventure has concluded successfully/)).toBeInTheDocument();
     });
@@ -45,7 +46,7 @@ describe('GameOverScreen', () => {
 
     it('calls onRestart when restart button is clicked on death screen', () => {
         const onRestart = vi.fn();
-        render(<GameOverScreen {...defaultProps} status="died" onRestart={onRestart} />);
+        render(<GameOverScreen {...defaultProps} status="died" onRestart={onRestart} currentSection={undefined} />);
         const restartButton = screen.getByText('Restart Adventure');
         restartButton.click();
         expect(onRestart).toHaveBeenCalledTimes(1);
@@ -53,7 +54,7 @@ describe('GameOverScreen', () => {
 
     it('calls onRestart when play again button is clicked on end screen', () => {
         const onRestart = vi.fn();
-        render(<GameOverScreen {...defaultProps} status="ended" onRestart={onRestart} />);
+        render(<GameOverScreen {...defaultProps} status="ended" onRestart={onRestart} currentSection={undefined} />);
         const playAgainButton = screen.getByText('Play Again');
         playAgainButton.click();
         expect(onRestart).toHaveBeenCalledTimes(1);
@@ -61,7 +62,7 @@ describe('GameOverScreen', () => {
 
     it('calls onBackToLibrary when back button is clicked on death screen', () => {
         const onBackToLibrary = vi.fn();
-        render(<GameOverScreen {...defaultProps} status="died" onBackToLibrary={onBackToLibrary} />);
+        render(<GameOverScreen {...defaultProps} status="died" onBackToLibrary={onBackToLibrary} currentSection={undefined} />);
         const backButton = screen.getByText('Back to Library');
         backButton.click();
         expect(onBackToLibrary).toHaveBeenCalledTimes(1);
@@ -69,14 +70,14 @@ describe('GameOverScreen', () => {
 
     it('calls onBackToLibrary when back button is clicked on end screen', () => {
         const onBackToLibrary = vi.fn();
-        render(<GameOverScreen {...defaultProps} status="ended" onBackToLibrary={onBackToLibrary} />);
+        render(<GameOverScreen {...defaultProps} status="ended" onBackToLibrary={onBackToLibrary} currentSection={undefined} />);
         const backButton = screen.getByText('Back to Library');
         backButton.click();
         expect(onBackToLibrary).toHaveBeenCalledTimes(1);
     });
 
     it('does not display section text when not provided', () => {
-        render(<GameOverScreen {...defaultProps} status="died" />);
+        render(<GameOverScreen {...defaultProps} status="died" currentSection={undefined} />);
         expect(screen.queryByText(/"/)).not.toBeInTheDocument();
     });
 });

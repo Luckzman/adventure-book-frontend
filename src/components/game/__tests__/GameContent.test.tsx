@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { GameContent } from '../GameContent';
-import type { GameSection } from '../../../services/booksApi';
 import type { GameState } from '../../../domain/game/gameTypes';
 import { INITIAL_GAME_STATE } from '../../../domain/game/gameTypes';
 
