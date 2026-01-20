@@ -23,11 +23,11 @@ try {
     } else if (existsSync(coverageFinalPath)) {
         // Fallback to coverage-final.json
         const coverage = JSON.parse(readFileSync(coverageFinalPath, 'utf-8'));
-        
+
         // Calculate from individual files
         let totalStatements = 0;
         let coveredStatements = 0;
-        
+
         for (const filePath in coverage) {
             if (filePath === 'total') {
                 // If total exists, use it
@@ -44,7 +44,7 @@ try {
                 coveredStatements += statements.filter(key => file.s[key] > 0).length;
             }
         }
-        
+
         if (coveragePercent === 0 && totalStatements > 0) {
             coveragePercent = Math.round((coveredStatements / totalStatements) * 100);
         }
