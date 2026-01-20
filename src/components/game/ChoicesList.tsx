@@ -1,4 +1,4 @@
-interface Choice {
+export interface Choice {
     id: string;
     number: number;
     text: string;
@@ -8,7 +8,7 @@ interface Choice {
 
 interface ChoicesListProps {
     choices: Choice[];
-    onChoiceSelect: (choiceId: string) => void;
+    onChoiceSelect: (gotoId: string) => void;
 }
 
 export const ChoicesList = ({ choices, onChoiceSelect }: ChoicesListProps) => {
@@ -24,12 +24,12 @@ export const ChoicesList = ({ choices, onChoiceSelect }: ChoicesListProps) => {
                     >
                         <div className="flex items-start gap-4">
                             {/* Number Badge */}
-                            <div className="flex-shrink-0 w-9 h-6 rounded-full bg-[#433025] text-white flex items-center justify-center font-bold text-sm">
+                            <div className="shrink-0 w-9 h-6 rounded-full bg-[#433025] text-white flex items-center justify-center font-bold text-sm">
                                 {choice.number}
                             </div>
 
                             {/* Choice Content */}
-                            <div className="flex-grow">
+                            <div className="grow">
                                 <p className="text-base sm:text-lg font-medium text-[#433025] mb-2">
                                     {choice.text}
                                 </p>

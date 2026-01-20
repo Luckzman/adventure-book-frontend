@@ -10,13 +10,12 @@ import { type Adventure } from './AdventureCard';
 interface AdventureLibraryProps {
     onSearchChange?: (value: string) => void;
     onFilterChange?: (filters: string[]) => void;
-    onBeginQuest?: (adventureId: string) => void;
+    onBeginQuest?: (adventurePath: string) => void;
 }
 
 export const AdventureLibrary = ({
     onSearchChange,
     onFilterChange,
-    onBeginQuest,
 }: AdventureLibraryProps) => {
     const [searchValue, setSearchValue] = useState('');
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -163,10 +162,7 @@ export const AdventureLibrary = ({
                         <p className="text-stone-600">{error}</p>
                     </div>
                 ) : (
-                    <AdventureCardList
-                        adventures={filteredAdventures}
-                        onBeginQuest={onBeginQuest}
-                    />
+                    <AdventureCardList adventures={filteredAdventures} />
                 )}
             </div>
         </main>

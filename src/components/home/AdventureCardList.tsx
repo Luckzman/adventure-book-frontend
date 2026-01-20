@@ -2,10 +2,9 @@ import { AdventureCard, type Adventure } from './AdventureCard';
 
 interface AdventureCardListProps {
     adventures: Adventure[];
-    onBeginQuest?: (adventureId: string) => void;
 }
 
-export const AdventureCardList = ({ adventures, onBeginQuest }: AdventureCardListProps) => {
+export const AdventureCardList = ({ adventures }: AdventureCardListProps) => {
     if (adventures.length === 0) {
         return (
             <div className="text-center py-12">
@@ -18,9 +17,9 @@ export const AdventureCardList = ({ adventures, onBeginQuest }: AdventureCardLis
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
             {adventures.map((adventure) => (
                 <AdventureCard
-                    key={adventure.id}
+                    key={adventure.path}
                     adventure={adventure}
-                    onBeginQuest={onBeginQuest}
+                // onBeginQuest={onBeginQuest}
                 />
             ))}
         </div>
